@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sollume – Không gian số an toàn</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--t:#1B6B78;--td:#0F4A55;--ts:#DCEFF0;--o:#EE9A4D;--os:#FCE9D6;--bg:#F2F8F8;--ink:#16323A;--m:#51696F;--r:#C23A3A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--o);outline-offset:2px}
+.w{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:20;background:#fffc;backdrop-filter:blur(8px);border-bottom:1px solid #D5E5E7}
+.bar{display:flex;align-items:center;gap:18px;height:64px}
+.brand{font-weight:800;font-size:21px;color:var(--td);display:flex;gap:8px;align-items:center;flex:none}
+nav{display:flex;gap:4px;overflow-x:auto;flex:1}
+nav button{border:0;background:none;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:500;color:var(--m);white-space:nowrap}
+nav button.on{background:var(--ts);color:var(--td);font-weight:700}
+main{padding:36px 0 110px}
+.view{display:none}.view.on{display:block}
+h1{font-size:clamp(26px,4vw,38px);color:var(--td);font-weight:800;line-height:1.2;margin-bottom:6px}
+h2{font-size:20px;color:var(--td);margin-bottom:8px}
+.sub{color:var(--m);margin-bottom:24px}
+.card{background:#fff;border-radius:22px;padding:26px;box-shadow:0 6px 24px #0f4a5512}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.btn{border:0;cursor:pointer;font-weight:600;padding:11px 24px;border-radius:999px;background:var(--t);color:#fff}
+.btn:hover{background:var(--td)}.btn.alt{background:none;color:var(--t);box-shadow:inset 0 0 0 2px var(--t)}.btn.alt:hover{background:var(--ts)}
+.btn.sm{padding:6px 16px;font-size:14px}.btn.red{background:var(--r)}
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0}
+.mood{border:2px solid transparent;background:var(--bg);border-radius:16px;padding:10px 0;cursor:pointer;font-size:28px}
+.mood span{display:block;font-size:12px;color:var(--m)}.mood.on{border-color:var(--t);background:var(--ts)}
+.note{background:var(--os);border-radius:14px;padding:14px 16px;font-size:15px;min-height:64px}
+.stat{font-size:34px;font-weight:800;color:var(--t);line-height:1}
+.stat small{display:block;font-size:13px;font-weight:500;color:var(--m);margin-top:6px}
+.steps{list-style:none;display:grid;gap:10px;margin-top:12px}
+.steps li{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:14px;background:var(--bg);color:var(--m)}
+.steps li i{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid #B9CACD;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800}
+.steps li.d{background:var(--ts);color:var(--td)}.steps li.d i{background:var(--t);border-color:var(--t);color:#fff}
+.prog{height:10px;background:var(--ts);border-radius:9px;overflow:hidden;margin:10px 0}.prog div{height:100%;background:var(--o);width:0;transition:width .4s}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px;color:var(--td)}
+textarea,input[type=text],select{width:100%;border:2px solid #D5E5E7;border-radius:12px;padding:10px 12px;background:#fff}
+textarea{min-height:64px;resize:vertical}
+.item{border-top:1px solid #E3EEEF;padding:14px 0}.item:first-child{border:0}
+.item small{color:var(--m)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:2px solid var(--ts);background:#fff;border-radius:999px;padding:5px 14px;font-size:14px;cursor:pointer}
+.chip.on{background:var(--t);color:#fff;border-color:var(--t)}
+.tag{display:inline-block;background:var(--ts);color:var(--td);font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px;margin-right:4px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.sw{flex:none;width:50px;height:28px;border-radius:99px;border:0;background:#B9CACD;position:relative;cursor:pointer}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw[aria-checked=true]{background:var(--t)}.sw[aria-checked=true]::after{transform:translateX(22px)}
+.opts{display:grid;gap:8px;margin:12px 0}
+.opt{border:2px solid #D5E5E7;border-radius:12px;padding:10px 14px;background:#fff;text-align:left;cursor:pointer}
+.opt.on{border-color:var(--t);background:var(--ts)}
+.breath{display:grid;place-items:center;padding:20px 0}
+#orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,var(--o),var(--t));display:grid;place-items:center;color:#fff;font-weight:700;text-align:center;font-size:15px;transition:transform 4s ease-in-out}
+details{border-top:1px solid #E3EEEF;padding:10px 0}summary{cursor:pointer;font-weight:600}
+.av{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:22px;flex:none}
+.sos{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--r);color:#fff;border:0;border-radius:999px;padding:13px 20px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px #c23a3a66}
+dialog{border:0;border-radius:22px;padding:28px;max-width:430px;width:calc(100% - 36px);margin:auto}
+dialog::backdrop{background:#0f323a8c}
+.opt2{display:block;padding:12px 16px;border-radius:12px;background:var(--bg);margin-bottom:8px;font-weight:600;color:var(--ink);text-decoration:none}
+.slots{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--td);color:#fff;padding:10px 20px;border-radius:99px;z-index:50;opacity:0;pointer-events:none;transition:opacity .3s}.toast.on{opacity:1}
+@media(max-width:800px){.g2,.g3{grid-template-columns:1fr}.brand b{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="w bar">
+ <div class="brand"><svg width="30" height="30" viewBox="0 0 40 40"><path d="M20 3c9 4 15 11 15 20 0 8-6 14-15 14S5 31 5 23C5 14 11 7 20 3z" fill="#1B6B78"/><path d="M20 12c5 3 8 7 8 12 0 5-4 8-8 8s-8-3-8-8c0-5 3-9 8-12z" fill="#EE9A4D"/><circle cx="20" cy="17" r="3" fill="#fff"/></svg><b>Sollume</b></div>
+ <nav id="nav"></nav>
+</div></header>
+
+<main class="w">
+<!-- TRANG CHỦ -->
+<section class="view" id="home">
+ <h1>Chào bạn, hôm nay thế nào?</h1><p class="sub">Một bước nhỏ mỗi ngày cho tinh thần của bạn.</p>
+ <div class="g2">
+  <div class="card"><h2>Hôm nay mình cảm thấy thế nào?</h2>
+   <div class="moods" id="moods"></div><div class="note" id="mnote">Chọn một mức để check-in.</div></div>
+  <div class="card"><h2>Tiến bộ của bạn</h2>
+   <div class="g3" style="gap:10px"><div class="stat" id="s1">0<small>lần check-in</small></div><div class="stat" id="s2">0<small>mục nhật ký</small></div><div class="stat" id="s3">–<small>tâm trạng TB</small></div></div>
+   <div id="spark" style="display:flex;gap:6px;align-items:flex-end;height:60px;margin-top:18px"></div></div>
+ </div>
+ <div class="card" style="margin-top:20px"><h2>Mental Health Journey</h2><div class="prog"><div id="pg"></div></div><ul class="steps" id="jr"></ul></div>
+</section>
+
+<!-- NHẬT KÝ -->
+<section class="view" id="diary">
+ <h1>Nhật ký cảm xúc</h1><p class="sub">Ghi theo cấu trúc Sự kiện – Cảm xúc – Suy nghĩ – Hành động để nhận ra quy luật của mình.</p>
+ <div class="g2"><div class="card"><h2>Viết mục mới</h2>
+  <label for="d1">Sự kiện – Chuyện gì đã xảy ra?</label><textarea id="d1"></textarea>
+  <label for="d2">Cảm xúc – Bạn cảm thấy gì?</label><textarea id="d2"></textarea>
+  <label for="d3">Suy nghĩ – Điều gì xuất hiện trong đầu?</label><textarea id="d3"></textarea>
+  <label for="d4">Hành động – Bạn đã làm gì?</label><textarea id="d4"></textarea>
+  <div class="row" style="margin-top:16px"><span id="encnote" class="tag">🔒 Đã mã hóa</span><button class="btn" id="dsave">Lưu nhật ký</button></div></div>
+  <div class="card"><h2>Các mục đã lưu</h2><div id="dlist"><p class="sub">Chưa có mục nào. Hãy viết mục đầu tiên.</p></div></div></div>
+</section>
+
+<!-- TỰ ĐÁNH GIÁ -->
+<section class="view" id="test">
+ <h1>Tự đánh giá</h1><p class="sub">Bộ câu hỏi sàng lọc lo âu nhanh. Đây là công cụ tham khảo, không phải chẩn đoán.</p>
+ <div class="card" id="tbox"></div>
+</section>
+
+<!-- THỰC HÀNH + HỌC -->
+<section class="view" id="practice">
+ <h1>Bài tập &amp; kiến thức</h1><p class="sub">Bộ công cụ bỏ túi để xoa dịu bản thân ngay khi căng thẳng.</p>
+ <div class="g2">
+  <div class="card"><h2>Thở hộp 4 – 4 – 6</h2><div class="breath"><div id="orb">Sẵn sàng</div></div>
+   <div class="row"><span id="bcount" class="sub" style="margin:0">0 chu kỳ</span><button class="btn" id="bbtn">Bắt đầu</button></div></div>
+  <div class="card"><h2>Grounding 5 – 4 – 3 – 2 – 1</h2><div id="gr"></div></div>
+ </div>
+ <div class="card" style="margin-top:20px"><h2>Học về sức khỏe tinh thần</h2><div id="learn"></div></div>
+</section>
+
+<!-- CỘNG ĐỒNG -->
+<section class="view" id="community">
+ <h1>Cộng đồng</h1><p class="sub">Nơi những người cùng hoàn cảnh nhận ra mình không cô độc. Mọi bài đều được kiểm duyệt.</p>
+ <div class="chips" id="gchips"></div>
+ <div class="g2" style="grid-template-columns:1fr 1.3fr;align-items:start">
+  <div class="card"><h2>Chia sẻ của bạn</h2>
+   <label for="pg">Nhóm</label><select id="pgsel"></select>
+   <label for="ptxt">Nội dung</label><textarea id="ptxt" placeholder="Bạn đang nghĩ gì?"></textarea>
+   <div class="row" style="margin-top:14px"><span>Đăng ẩn danh</span><button class="sw" id="anon" role="switch" aria-checked="true" aria-label="Đăng ẩn danh"></button></div>
+   <button class="btn" id="ppost" style="margin-top:16px;width:100%">Đăng bài</button></div>
+  <div class="card" id="feed"></div>
+ </div>
+</section>
+
+<!-- CHUYÊN GIA -->
+<section class="view" id="experts">
+ <h1>Kết nối chuyên gia</h1><p class="sub">Hồ sơ đã xác minh. Lọc theo nhu cầu, đặt lịch và tư vấn.</p>
+ <div class="chips" id="echips"></div><div class="g3" id="elist"></div>
+ <div class="card" style="margin-top:20px"><h2>Lịch hẹn của bạn</h2><div id="blist"><p class="sub">Chưa có lịch hẹn.</p></div></div>
+</section>
+
+<!-- BẢO MẬT -->
+<section class="view" id="privacy">
+ <h1>Quyền riêng tư</h1><p class="sub">Dữ liệu tâm lý rất nhạy cảm. Quyền kiểm soát luôn thuộc về bạn.</p>
+ <div class="card" style="max-width:640px">
+  <div class="row item"><div><b>Chia sẻ ẩn danh mặc định</b><br><small>Ẩn tên khi đăng lên cộng đồng</small></div><button class="sw" data-k="anon" role="switch" aria-checked="true" aria-label="Ẩn danh"></button></div>
+  <div class="row item"><div><b>Mã hóa nhật ký cá nhân</b><br><small>Chỉ bạn đọc được nhật ký</small></div><button class="sw" data-k="enc" role="switch" aria-checked="true" aria-label="Mã hóa"></button></div>
+  <div class="row item"><div><b>Xóa toàn bộ dữ liệu</b><br><small>Check-in, nhật ký, đánh giá, lịch hẹn</small></div><button class="btn red sm" id="wipe">Xóa dữ liệu</button></div>
+ </div>
+</section>
+</main>
+
+<button class="sos" id="sosb">🆘 Hỗ trợ khẩn cấp</button>
+<dialog id="sos"><h2 style="color:var(--r)">Bạn không đơn độc</h2><p class="sub">Nếu bạn đang gặp nguy hiểm hoặc có ý nghĩ làm hại bản thân, hãy liên hệ ngay.</p>
+ <a class="opt2" href="tel:115">📞 Gọi cấp cứu 115</a><a class="opt2" href="#" data-go="experts">👩‍⚕️ Nói chuyện với chuyên gia</a><a class="opt2" href="#" data-go="practice">🌬️ Bài tập thở ngay bây giờ</a>
+ <button class="btn alt" style="width:100%;margin-top:6px" id="sosx">Đóng</button></dialog>
+<dialog id="bk"><h2 id="bkn"></h2><p class="sub">Chọn khung giờ tư vấn:</p><div class="slots" id="slots"></div>
+ <div class="row"><button class="btn alt" id="bkx">Hủy</button><button class="btn" id="bkok">Xác nhận đặt lịch</button></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fresh=()=>({ci:[],diary:[],tests:0,prac:0,learn:new Set(),posts:[],book:[],anon:true,enc:true});
+let S=fresh();
+const GROUPS=['Áp lực học tập','Áp lực công việc','Lo âu','Burnout'];
+S.posts=[{g:'Áp lực học tập',a:'Ẩn danh',t:'Sắp thi mà mình không tập trung nổi. Có ai từng như vậy không?',l:12},{g:'Burnout',a:'Ẩn danh',t:'Làm việc 3 tháng không nghỉ, giờ mình thấy kiệt sức. Mình bắt đầu nghỉ 10 phút mỗi chiều và thấy đỡ hơn.',l:27}];
+const EX=[{n:'ThS. Nguyễn Minh An',r:'Nhà tâm lý lâm sàng',k:['Lo âu','Burnout'],c:'#1B6B78',s:['09:00','14:00','16:30']},
+{n:'TS. Trần Bảo Châu',r:'Tham vấn học đường',k:['Áp lực học tập','Lo âu'],c:'#EE9A4D',s:['10:00','15:00','19:30']},
+{n:'ThS. Lê Hoài Phương',r:'Tham vấn tâm lý',k:['Áp lực công việc','Burnout'],c:'#0F4A55',s:['08:30','13:30','20:00']}];
+const MOODS=[['😞','Rất tệ'],['😕','Hơi tệ'],['😐','Bình thường'],['🙂','Ổn'],['😄','Rất tốt']];
+const MSG=['Nghe có vẻ hôm nay rất nặng nề. Bạn không một mình. Thử bài thở 2 phút hoặc nói chuyện với chuyên gia.','Cảm ơn bạn đã nói thật. Hãy ghi lại chuyện gì đã xảy ra vào nhật ký.','Một ngày bình thường cũng đáng ghi nhận. Check-in đều giúp bạn thấy quy luật cảm xúc.','Thật tốt! Hãy lưu lại điều gì giúp bạn ổn hôm nay.','Tuyệt vời! Bạn có thể chia sẻ niềm vui với cộng đồng.'];
+const QS=['Cảm thấy lo lắng, bồn chồn hoặc căng thẳng','Không thể ngừng hoặc kiểm soát được lo lắng','Lo lắng quá mức về nhiều việc khác nhau','Khó thư giãn','Dễ cáu gắt hoặc khó chịu'];
+const AN=['Không bao giờ','Vài ngày','Hơn nửa số ngày','Gần như mỗi ngày'];
+const LEARN=[['Lo âu và căng thẳng khác nhau thế nào?','Căng thẳng thường gắn với một áp lực cụ thể và giảm khi áp lực qua đi. Lo âu kéo dài, xuất hiện cả khi không có tác nhân rõ ràng.'],['Burnout là gì?','Là trạng thái kiệt quệ do áp lực kéo dài: mệt mỏi, mất động lực, xa cách với công việc hoặc việc học.'],['Khi nào nên gặp chuyên gia?','Khi cảm xúc tiêu cực kéo dài trên 2 tuần, ảnh hưởng giấc ngủ, ăn uống, học tập hoặc các mối quan hệ.']];
+const VIEWS=[['home','Trang chủ'],['diary','Nhật ký'],['test','Tự đánh giá'],['practice','Bài tập'],['community','Cộng đồng'],['experts','Chuyên gia'],['privacy','Quyền riêng tư']];
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)};
+const go=v=>{$$('.view').forEach(e=>e.classList.toggle('on',e.id===v));$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));scrollTo(0,0);render()};
+$('#nav').innerHTML=VIEWS.map(v=>`<button data-v="${v[0]}">${v[1]}</button>`).join('');
+$('#nav').onclick=e=>e.target.dataset.v&&go(e.target.dataset.v);
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();$('#sos').close();go(g.dataset.go)}});
+
+/* Check-in */
+$('#moods').innerHTML=MOODS.map((m,i)=>`<button class="mood" data-i="${i}">${m[0]}<span>${m[1]}</span></button>`).join('');
+$('#moods').onclick=e=>{const b=e.target.closest('.mood');if(!b)return;const i=+b.dataset.i;S.ci.push(i);$('#mnote').textContent=MSG[i];toast('Đã check-in hôm nay');render()};
+
+/* Nhật ký */
+$('#dsave').onclick=()=>{const v=[1,2,3,4].map(n=>$('#d'+n).value.trim());if(v.every(x=>!x))return toast('Hãy viết ít nhất một ô');S.diary.unshift({v,d:new Date().toLocaleString('vi-VN')});[1,2,3,4].forEach(n=>$('#d'+n).value='');toast('Đã lưu nhật ký');render()};
+$('#dlist').onclick=e=>{if(e.target.dataset.del!=null){S.diary.splice(+e.target.dataset.del,1);render()}};
+
+/* Tự đánh giá */
+let q={i:0,a:[]};
+function renderTest(){const b=$('#tbox');
+ if(q.i>=QS.length){const s=q.a.reduce((x,y)=>x+y,0),lv=s<5?['Mức thấp','Bạn đang ở mức lo âu thấp. Hãy duy trì thói quen check-in và các bài tập thư giãn.']:s<10?['Mức trung bình','Bạn có một số dấu hiệu lo âu. Hãy thử bài tập thở và theo dõi nhật ký trong vài tuần.']:['Mức cao','Bạn có nhiều dấu hiệu lo âu. Nên trao đổi với chuyên gia tâm lý.'];
+  b.innerHTML=`<h2>Kết quả: ${lv[0]} (${s}/15)</h2><p>${lv[1]}</p><p class="sub" style="margin-top:10px">Đây không phải chẩn đoán y tế.</p><div class="row" style="justify-content:flex-start;margin-top:14px"><button class="btn" data-go="experts">Gặp chuyên gia</button><button class="btn alt" id="tre">Làm lại</button></div>`;
+  $('#tre').onclick=()=>{q={i:0,a:[]};renderTest()};return}
+ b.innerHTML=`<small>Câu ${q.i+1}/${QS.length}</small><div class="prog"><div style="width:${q.i/QS.length*100}%"></div></div><h2>Trong 2 tuần qua, bạn thường: ${QS[q.i].toLowerCase()}?</h2><div class="opts">${AN.map((a,i)=>`<button class="opt" data-a="${i}">${a}</button>`).join('')}</div>`}
+$('#tbox').onclick=e=>{if(e.target.dataset.a!=null){q.a.push(+e.target.dataset.a);q.i++;if(q.i===QS.length)S.tests++;renderTest()}};
+
+/* Thở */
+let bt=null,bc=0;
+$('#bbtn').onclick=()=>{if(bt){clearTimeout(bt);bt=null;$('#bbtn').textContent='Bắt đầu';$('#orb').style.transform='';$('#orb').textContent='Sẵn sàng';return}
+ $('#bbtn').textContent='Dừng';const ph=[['Hít vào',4,1.45],['Giữ',4,1.45],['Thở ra',6,1]];let i=0;
+ const step=()=>{const p=ph[i%3],o=$('#orb');o.textContent=p[0];o.style.transition=`transform ${p[1]}s ease-in-out`;o.style.transform=`scale(${p[2]})`;
+  if(i%3===2){bc++;S.prac++;$('#bcount').textContent=bc+' chu kỳ'}i++;bt=setTimeout(step,p[1]*1000)};step()};
+/* Grounding */
+const GR=[['5','điều bạn nhìn thấy'],['4','điều bạn chạm được'],['3','âm thanh bạn nghe'],['2','mùi bạn ngửi thấy'],['1','vị bạn cảm nhận']];
+$('#gr').innerHTML=GR.map((g,i)=>`<label style="display:flex;gap:10px;align-items:center;font-weight:500;margin:8px 0"><input type="checkbox" data-g="1"> <b>${g[0]}</b> ${g[1]}</label>`).join('');
+$('#gr').onchange=()=>{if($$('[data-g]').every(c=>c.checked)){S.prac++;toast('Bạn đã hoàn thành grounding');$$('[data-g]').forEach(c=>c.checked=false);render()}};
+$('#learn').innerHTML=LEARN.map((l,i)=>`<details data-l="${i}"><summary>${l[0]}</summary><p class="sub" style="margin:8px 0 0">${l[1]}</p></details>`).join('');
+$('#learn').addEventListener('toggle',e=>{if(e.target.open){S.learn.add(e.target.dataset.l);render()}},true);
+
+/* Cộng đồng */
+let gf='Tất cả';
+$('#pgsel').innerHTML=GROUPS.map(g=>`<option>${g}</option>`).join('');
+const BAD=/(tự tử|tự sát|giết|chết đi)/i;
+$('#ppost').onclick=()=>{const t=$('#ptxt').value.trim();if(!t)return toast('Hãy viết nội dung');
+ if(BAD.test(t)){$('#sos').showModal();return toast('Bài chưa đăng. Hãy xem các hỗ trợ khẩn cấp.')}
+ S.posts.unshift({g:$('#pgsel').value,a:$('#anon').getAttribute('aria-checked')==='true'?'Ẩn danh':'Bạn',t,l:0});$('#ptxt').value='';toast('Đã đăng bài');render()};
+$('#feed').onclick=e=>{const i=e.target.dataset.like,r=e.target.dataset.rep;if(i!=null){S.posts[i].l++;render()}if(r!=null){S.posts.splice(+r,1);toast('Đã báo cáo. Bài viết được gửi kiểm duyệt');render()}};
+$('#anon').onclick=e=>e.target.setAttribute('aria-checked',e.target.getAttribute('aria-checked')!=='true');
+
+/* Chuyên gia */
+let ef='Tất cả',cur=null,slot=null;
+$('#elist').onclick=e=>{const i=e.target.dataset.book;if(i!=null){cur=EX[i];slot=null;$('#bkn').textContent=cur.n;$('#slots').innerHTML=cur.s.map(s=>`<button class="chip" data-s="${s}">${s} – Hôm nay</button>`).join('');$('#bk').showModal()}};
+$('#slots').onclick=e=>{if(e.target.dataset.s){slot=e.target.dataset.s;$$('#slots .chip').forEach(c=>c.classList.toggle('on',c===e.target))}};
+$('#bkx').onclick=()=>$('#bk').close();
+$('#bkok').onclick=()=>{if(!slot)return toast('Hãy chọn khung giờ');S.book.push({n:cur.n,s:slot});$('#bk').close();toast('Đặt lịch thành công');render()};
+
+/* Chung */
+const chips=(el,list,cur,set)=>{$(el).innerHTML=['Tất cả',...list].map(x=>`<button class="chip ${x===cur?'on':''}">${x}</button>`).join('');$(el).onclick=e=>{if(e.target.classList.contains('chip')){set(e.target.textContent);render()}}};
+$$('.sw[data-k]').forEach(s=>s.onclick=()=>{const k=s.dataset.k;S[k]=!S[k];s.setAttribute('aria-checked',S[k]);$('#encnote').textContent=S.enc?'🔒 Đã mã hóa':'🔓 Chưa mã hóa'});
+$('#wipe').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu cá nhân? Không thể hoàn tác.')){const p=S.posts;S=fresh();S.posts=p;q={i:0,a:[]};render();toast('Đã xóa dữ liệu')}};
+$('#sosb').onclick=()=>$('#sos').showModal();$('#sosx').onclick=()=>$('#sos').close();
+
+function render(){
+ const n=S.ci.length,avg=n?(S.ci.reduce((a,b)=>a+b,0)/n+1).toFixed(1):'–';
+ $('#s1').firstChild.nodeValue=n;$('#s2').firstChild.nodeValue=S.diary.length;$('#s3').firstChild.nodeValue=avg;
+ $('#spark').innerHTML=S.ci.slice(-14).map(v=>`<div title="${MOODS[v][1]}" style="flex:1;background:${v>2?'var(--t)':'var(--o)'};border-radius:6px;height:${(v+1)*20}%"></div>`).join('')||'<small class="sub">Biểu đồ tâm trạng sẽ hiện ở đây.</small>';
+ const J=[['Check-in hằng ngày',n>0],['Tự đánh giá',S.tests>0],['Học kiến thức',S.learn.size>0],['Thực hành bài tập',S.prac>0],['Tương tác cộng đồng',S.posts.some(p=>p.a==='Bạn'||p.l===0)],['Kết nối chuyên gia / trị liệu',S.book.length>0]];
+ $('#jr').innerHTML=J.map((j,i)=>`<li class="${j[1]?'d':''}"><i>${j[1]?'✓':i+1}</i>${j[0]}</li>`).join('');
+ $('#pg').style.width=J.filter(j=>j[1]).length/J.length*100+'%';
+ $('#dlist').innerHTML=S.diary.length?S.diary.map((d,i)=>`<div class="item"><small>${d.d} ${S.enc?'🔒':''}</small>${['Sự kiện','Cảm xúc','Suy nghĩ','Hành động'].map((l,k)=>d.v[k]?`<div><b>${l}:</b> ${esc(d.v[k])}</div>`:'').join('')}<button class="btn alt sm" data-del="${i}" style="margin-top:8px">Xóa</button></div>`).join(''):'<p class="sub">Chưa có mục nào. Hãy viết mục đầu tiên.</p>';
+ if(!$('#tbox').innerHTML||$('#tbox').innerHTML.includes('Câu')||q.i>=QS.length)renderTest();
+ chips('#gchips',GROUPS,gf,v=>gf=v);
+ const ps=S.posts.map((p,i)=>[p,i]).filter(x=>gf==='Tất cả'||x[0].g===gf);
+ $('#feed').innerHTML=ps.length?ps.map(([p,i])=>`<div class="item"><span class="tag">${p.g}</span><small>${p.a}</small><p style="margin:6px 0">${esc(p.t)}</p><button class="btn alt sm" data-like="${i}">💙 Đồng cảm (${p.l})</button> <button class="btn alt sm" data-rep="${i}">Báo cáo</button></div>`).join(''):'<p class="sub">Chưa có bài trong nhóm này.</p>';
+ chips('#echips',GROUPS,ef,v=>ef=v);
+ $('#elist').innerHTML=EX.filter(x=>ef==='Tất cả'||x.k.includes(ef)).map(x=>`<div class="card" style="text-align:center"><div class="av" style="background:${x.c};margin:0 auto 10px">${x.n.split(' ').pop()[0]}</div><h2 style="font-size:17px;margin:0">${x.n}</h2><p class="sub" style="margin:2px 0 10px;font-size:14px">${x.r} · ✔ Đã xác minh</p>${x.k.map(k=>`<span class="tag">${k}</span>`).join('')}<br><button class="btn sm" style="margin-top:14px" data-book="${EX.indexOf(x)}">Đặt lịch</button></div>`).join('');
+ $('#blist').innerHTML=S.book.length?S.book.map(b=>`<div class="item"><b>${b.n}</b> – ${b.s} hôm nay <span class="tag">Đã xác nhận</span></div>`).join(''):'<p class="sub">Chưa có lịch hẹn.</p>';
+}
+go('home');
+</script>
+</body>
+</html>
